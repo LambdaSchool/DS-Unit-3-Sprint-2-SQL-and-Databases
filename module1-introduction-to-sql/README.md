@@ -52,7 +52,9 @@ Use `sqlite3` to load and write queries to explore the data, and answer the
 following questions:
 
 - How many total Characters are there?
+
 - How many of each specific subclass?
+
 - How many total Items?
 - How many of the Items are weapons? How many are not?
 - How many Items does each character have? (Return first 20 rows)
