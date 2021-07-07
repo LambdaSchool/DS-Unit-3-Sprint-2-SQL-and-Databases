@@ -1,0 +1,106 @@
+
+IMPORT AND QUERY 
+>>> import sqlite3
+>>> conn = sqlite3.connect('rpg_db.sqlite3')
+>>> curs = conn.cursor()
+>>> query = 'SELECT COUNT(*) FROM armory_item;'
+>>> result = curs.execute(query)
+>>> result.fetchall()
+[(174,)]
+
+
+
+
+IMPORT, CREATE TABLE, COMMIT TO DB
+>>> import sqlite3
+>>> conn = sqlite3.connect('toy_db.sqlite3')
+>>> create_statement = """
+... CREATE TABLE toy (
+...   toy_id integer NOT NULL PRIMARY KEY AUTOINCREMENT,
+...   toy_name varchar(30),
+...   price numeric,
+...   small_parts integer)""
+>>> create_statement
+'\nCREATE TABLE toy (\n  toy_id integer NOT NULL PRIMARY KEY AUTOINCREMENT,\n  toy_name varchar(30),\n  price numeric,\n  small_parts integer)'
+>>> curs = conn.cursor()
+>>> curs.execute(create_statement)
+<sqlite3.Cursor object at 0x10ca6b6c0>
+>>> conn.commit()
+
+
+
+
+IMPORT, QUERY, INSERT VALUES, QUERY, COMMIT
+>>> import sqlite3
+>>> conn = sqlite3.connect('toy_db.sqlite3')
+>>> curs = conn.cursor()
+>>> query = 'SELECT * FROM toy;'
+>>> results = curs.execute(query)
+>>> result.fetchall()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'result' is not defined
+>>> results.fetchall()
+[]
+>>> insert = "INSERT INTO toy VALUES ('Legos', 10.5, 1), ('Train', 17.6, 0);"
+>>> insert
+"INSERT INTO toy VALUES ('Legos', 10.5, 1), ('Train', 17.6, 0);"
+>>> curs.execute(insert)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+sqlite3.OperationalError: table toy has 4 columns but 3 values were supplied
+>>> insert = "INSERT INTO toy VALUES (1, 'Legos', 10.5, 1), (2, 'Train', 17.6, 0);"
+>>> curs.execute(insert)
+<sqlite3.Cursor object at 0x1085036c0>
+>>> results = curs.execute(query)
+>>> results.fetchall()
+[(1, 'Legos', 10.5, 1), (2, 'Train', 17.6, 0)]
+>>> insert = "INSERT INTO toy VALUES (1, 'Car', 'A million dollars!!', 1);"
+>>> curs.execute(insert)
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+sqlite3.IntegrityError: UNIQUE constraint failed: toy.toy_id
+>>> insert = "INSERT INTO toy VALUES (3, 'Car', 'A million dollars!!', 1);"
+>>> curs.execute(insert)
+<sqlite3.Cursor object at 0x1085036c0>
+>>> results = curs.execute(query)
+>>> results.fetchall()
+[(1, 'Legos', 10.5, 1), (2, 'Train', 17.6, 0), (3, 'Car', 'A million dollars!!', 1)]
+>>> conn.commit()
+
+
+INNER JOIN TWO TABLES
+SELECT 
+name, mana
+FROM charactercreator_mage
+INNER JOIN charactercreator_character
+ON charactercreator_mage.character_ptr_id = 
+charactercreator_character.character_id;
+
+SAME AS ABOVE
+SELECT name, mana
+FROM charactercreator_mage, charactercreator_character
+WHERE charactercreator_character.character_id =
+charactercreator_mage.character_ptr_id;
+
+USING ALIASES
+SELECT cc.name, cm.mana
+FROM charactercreator_mage AS cm, charactercreator_character AS cc
+WHERE cc.character_id = cm.character_ptr_id;
+
+SIMPLER QUERY
+SELECT name, weapon
+FROM character_creator AS cc
+WHERE cc.id == 1
+
+COMPLEX JOIN WITH ALIAS
+SELECT cc.name AS character_name, ai.name AS item_name
+FROM
+charactercreator_character AS cc,
+armory_item AS ai,
+charactercreator_character_inventory AS cci
+WHERE
+cc.character_id = cci.character_id AND
+ai.item_id = cci.item_id AND
+cc.character_id = 1;
+
