@@ -117,8 +117,7 @@ When you submit your files to Canvas you should upload `queries.py`,
 ## Resources and Stretch Goals
 
 For a more complicated example SQLite database with a number of tables to play
-with, check out this [SQLite Sample
-Database](https://www.sqlitetutorial.net/sqlite-sample-database/).
+with, check out this [SQLite Sample Database](https://www.sqlitetutorial.net/sqlite-sample-database/).
 
 The RPG data also exists in a [JSON
 file](https://github.com/LambdaSchool/Django-RPG/blob/master/testdata.json) -
