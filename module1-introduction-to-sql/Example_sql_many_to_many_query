@@ -1,0 +1,8 @@
+
+SELECT character.name AS character_name, item.name AS item_name
+FROM charactercreator_character AS character,
+     armory_item AS item,
+     charactercreator_character_inventory AS inventory
+WHERE character.character_id = 1
+  AND character.character_id = inventory.character_id
+  AND item.item_id = inventory.item_id;
